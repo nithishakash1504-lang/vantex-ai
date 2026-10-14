@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>vantex.ai — Prompt in. Code out.</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f7f7fb;--surface:#fff;--code:#0f1220;--code-fg:#d7dcff;--text:#12142a;--muted:#5d6280;--line:#e2e4f0;--a:#7c3aed;--b:#06b6d4;--c:#ec4899;--d:#f59e0b}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#090a14;--surface:#12142a;--code:#070813;--code-fg:#d7dcff;--text:#eceeff;--muted:#9a9fc4;--line:#23264a;--a:#8a6dff;--b:#22d3ee}}
+:root[data-theme="dark"]{--bg:#090a14;--surface:#12142a;--code:#070813;--code-fg:#d7dcff;--text:#eceeff;--muted:#9a9fc4;--line:#23264a;--a:#8a6dff;--b:#22d3ee}
+*,*:before,*:after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.55}
+.wrap{max-width:1000px;margin:0 auto;padding:0 20px}
+nav{display:flex;justify-content:space-between;align-items:center;padding:18px 0}
+.logo{font-weight:800;font-size:1.3rem;letter-spacing:-.5px}
+.logo span{background:linear-gradient(90deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
+nav a{color:var(--muted);text-decoration:none;margin-left:20px;font-size:.92rem}
+nav a:hover{color:var(--text)}
+.hero{text-align:center;padding:42px 0 26px}
+.pill{display:inline-block;border:1px solid var(--line);background:var(--surface);color:var(--muted);padding:5px 14px;border-radius:99px;font-size:.8rem}
+h1{font-size:clamp(2.2rem,6vw,3.8rem);line-height:1.08;letter-spacing:-1.5px;margin:18px 0 14px}
+h1 em{font-style:normal;background:linear-gradient(90deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--muted);max-width:560px;margin:0 auto;font-size:1.08rem}
+.studio{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px;margin:28px 0;box-shadow:0 10px 40px rgba(109,74,255,.12)}
+textarea{width:100%;min-height:92px;resize:vertical;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:12px;padding:14px;font:inherit;font-size:1rem}
+textarea:focus,select:focus{outline:2px solid var(--a);outline-offset:1px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chip{border:1px solid var(--line);background:transparent;color:var(--muted);padding:6px 12px;border-radius:99px;font-size:.82rem;cursor:pointer}
+.chip:hover{color:var(--text);border-color:var(--a)}
+select{background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:11px 12px;font:inherit}
+.btn{border:0;border-radius:10px;padding:11px 20px;font:inherit;font-weight:600;cursor:pointer;color:#fff;background:linear-gradient(90deg,var(--a),var(--b))}
+.btn:disabled{opacity:.55;cursor:wait}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line);padding:6px 12px;font-size:.82rem;font-weight:500}
+.grow{flex:1}
+.tabs{flex-wrap:wrap}
+.learn{display:none;margin-top:16px}
+.learn.on{display:block}
+.learn h4{margin:18px 0 8px;font-size:1rem}
+.learn h4:first-child{margin-top:0}
+.learn .sumtxt{margin:0;color:var(--muted);font-size:.92rem}
+.badge{display:inline-block;font-size:.72rem;border:1px solid var(--line);border-radius:99px;padding:2px 10px;color:var(--muted);margin-left:8px;font-weight:600}
+.lbox{border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:10px}
+.lbox p{margin:6px 0 0;color:var(--muted);font-size:.9rem}
+.lbox code{display:block;background:var(--code);color:var(--code-fg);padding:8px 10px;border-radius:8px;font:12px/1.5 ui-monospace,Menlo,Consolas,monospace;overflow-x:auto;white-space:pre;margin-top:6px}
+.lbox.bad{border-left:3px solid #ef4444}
+.lbox .ln{font-size:.75rem;color:var(--a);font-weight:700}
+.lbox summary{cursor:pointer;font-weight:600;font-size:.92rem}
+.learn ul{padding-left:18px;color:var(--muted);font-size:.9rem}
+.tabs{display:flex;gap:6px;margin-bottom:12px;background:var(--bg);padding:4px;border-radius:12px;width:fit-content}
+.tab{border:0;background:transparent;color:var(--muted);padding:8px 16px;border-radius:9px;font:inherit;font-size:.9rem;font-weight:600;cursor:pointer}
+.tab.on{background:var(--surface);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.15)}
+textarea.mono{font:13px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;min-height:180px}
+.rev{display:none;margin-top:16px;border:1px solid var(--line);border-radius:12px;padding:16px}
+.rev.on{display:block}
+.score{display:flex;gap:16px;align-items:center}
+.score p{margin:2px 0 0;color:var(--muted);font-size:.92rem}
+.ring{width:84px;height:84px;border-radius:50%;background:conic-gradient(var(--c,#22c55e) calc(var(--p,0)*1%),var(--line) 0);display:grid;place-items:center;position:relative;flex:none}
+.ring:before{content:"";position:absolute;inset:8px;border-radius:50%;background:var(--surface)}
+.ring span{position:relative;font-size:.7rem;color:var(--muted)}
+.ring b{font-size:1.5rem;color:var(--text)}
+.rev ul{margin:12px 0 0;padding-left:18px;font-size:.9rem}
+.rev li{margin-bottom:6px}
+.out{margin-top:16px;border-radius:12px;overflow:hidden;background:var(--code);display:none}
+.out.on{display:block}
+.bar{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-bottom:1px solid #ffffff18;color:#9aa0d0;font-size:.82rem}
+.bar .btn.ghost{color:#d7dcff;border-color:#ffffff30}
+pre{margin:0;padding:16px;overflow-x:auto;max-height:480px;overflow-y:auto;color:var(--code-fg);font:13px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.msg{color:var(--muted);font-size:.85rem;margin-top:10px;min-height:1em}
+h2{font-size:1.6rem;letter-spacing:-.5px;text-align:center;margin:64px 0 24px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px}
+.card b{display:block;margin-bottom:6px}
+.card p{margin:0;color:var(--muted);font-size:.92rem}
+.langs{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.langs span{background:var(--surface);border:1px solid var(--line);padding:8px 16px;border-radius:10px;font-weight:600;font-size:.9rem}
+footer{text-align:center;color:var(--muted);font-size:.85rem;padding:60px 0 30px}
+body{background:radial-gradient(60% 40% at 8% 0%,rgba(236,72,153,.2),transparent),radial-gradient(50% 40% at 92% 6%,rgba(6,182,212,.22),transparent),radial-gradient(60% 40% at 50% 100%,rgba(245,158,11,.16),transparent),var(--bg);background-attachment:fixed}
+.logo span,h1 em,h2{background:linear-gradient(90deg,var(--a),var(--c),var(--d));-webkit-background-clip:text;background-clip:text;color:transparent}
+.btn{background:linear-gradient(90deg,var(--a),var(--c) 60%,var(--d))}
+.pill{background:linear-gradient(90deg,rgba(124,58,237,.16),rgba(236,72,153,.16));border-color:var(--a);color:var(--text)}
+.studio{border:2px solid transparent;background:linear-gradient(var(--surface),var(--surface)) padding-box,linear-gradient(120deg,var(--a),var(--c),var(--d),var(--b)) border-box;box-shadow:0 16px 60px rgba(236,72,153,.22)}
+.tab.on{background:linear-gradient(90deg,var(--a),var(--c));color:#fff}
+.chip:hover{background:var(--a);color:#fff;border-color:var(--a)}
+.bar{background:linear-gradient(90deg,#3b1d8f,#9d2a73)}
+.card{border-top:4px solid var(--a)}
+.card:nth-child(2){border-top-color:var(--c)}
+.card:nth-child(3){border-top-color:var(--b)}
+.card:nth-child(1) b{color:var(--a)}
+.card:nth-child(2) b{color:var(--c)}
+.card:nth-child(3) b{color:var(--b)}
+.langs span{border-width:2px}
+.langs span:nth-child(5n+1){border-color:var(--a);color:var(--a)}
+.langs span:nth-child(5n+2){border-color:var(--c);color:var(--c)}
+.langs span:nth-child(5n+3){border-color:var(--d);color:var(--d)}
+.langs span:nth-child(5n+4){border-color:var(--b);color:var(--b)}
+.langs span:nth-child(5n){border-color:#22c55e;color:#22c55e}
+.lbox{border-left:3px solid var(--b)}
+.lbox .ln{color:var(--c)}
+.made{font-size:1rem;background:linear-gradient(90deg,var(--c),var(--d),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav><div class="logo">vantex<span>.ai</span></div><div><a href="#how">How it works</a><a href="#langs">Languages</a></div></nav>
+
+<header class="hero">
+<span class="pill">✦ One prompt. Complete code.</span>
+<h1>Describe it.<br><em>Vantex builds it.</em></h1>
+<p class="sub">Type what you want in plain English and get full, runnable code in C, Java, HTML, Python and more — in seconds.</p>
+</header>
+
+<section class="studio" id="studio">
+<div class="tabs"><button class="tab on" id="tg" onclick="setMode('gen')">Generate</button><button class="tab" id="tr" onclick="setMode('review')">Review &amp; fix</button><button class="tab" id="tl" onclick="setMode('learn')">Explain &amp; learn</button></div>
+<textarea id="prompt" placeholder="e.g. make me a code for a calculator" aria-label="Describe the code you want"></textarea>
+<div class="chips" id="chips"></div>
+<div class="row">
+<select id="lang" aria-label="Programming language"></select>
+<span class="grow"></span>
+<button class="btn" id="go">Generate code</button>
+</div>
+<div class="msg" id="msg"></div>
+<div class="rev" id="rev"><div class="score"><div class="ring" id="ring"><span><b id="num">0</b>/100</span></div><div><b id="verdict"></b><p id="sum"></p></div></div><ul id="issues"></ul></div>
+<div class="learn" id="learn"></div>
+<div class="out" id="out">
+<div class="bar"><span id="meta">output</span><span><button class="btn ghost" id="copy">Copy</button> <button class="btn ghost" id="dl" style="display:none">Download</button></span></div>
+<pre><code id="code"></code></pre>
+</div>
+</section>
+
+<section id="how">
+<h2>How it works</h2>
+<div class="grid">
+<div class="card"><b>1 · Describe</b><p>Write a single prompt — "a calculator", "a snake game", "a to-do list with login".</p></div>
+<div class="card"><b>2 · Pick a language</b><p>Choose C, Java, Python, HTML and more. Vantex adapts idioms and structure to each.</p></div>
+<div class="card"><b>3 · Get full code</b><p>Receive the entire program, commented and ready to copy, run or download.</p></div>
+</div>
+</section>
+
+<section id="langs">
+<h2>Works in your language</h2>
+<div class="langs" id="langlist"></div>
+</section>
+
+<footer>© 2026 vantex.ai · Always review generated code before shipping it.<br><br>Made by <b class="made">Nithish</b></footer>
+</div>
+
+<script>
+const LANGS=[["Python","py"],["C","c"],["Java","java"],["HTML / CSS / JS","html"],["JavaScript","js"],["C++","cpp"],["C#","cs"],["TypeScript","ts"],["Go","go"],["Rust","rs"],["PHP","php"],["Kotlin","kt"],["Swift","swift"]];
+const EX=["a calculator","a snake game","a to-do list app","a password generator","a tic-tac-toe game"];
+const $=id=>document.getElementById(id);
+const sel=$("lang");
+function buildOpts(auto){sel.textContent="";if(auto){const a=document.createElement("option");a.value="auto";a.textContent="Auto-detect";sel.appendChild(a)}LANGS.forEach(([n],i)=>{const o=document.createElement("option");o.value=i;o.textContent=n;sel.appendChild(o)})}
+buildOpts(false);
+LANGS.forEach(([n])=>{const s=document.createElement("span");s.textContent=n;$("langlist").appendChild(s)});
+EX.forEach(t=>{const b=document.createElement("button");b.className="chip";b.textContent=t;b.onclick=()=>{$("prompt").value="make me a code for "+t;$("prompt").focus()};$("chips").appendChild(b)});
+
+let sample=null,downloads=null;
+// ---- Paste the URL of your AI backend here (see worker.js). No API key is ever stored in this page. ----
+const ENDPOINT='https://vantex-ai.nithishakash1504.workers.dev';
+async function apiSample(input,o={}){
+ if(!ENDPOINT){const e=new Error('no endpoint');e.code='no_key';throw e}
+ const res=await fetch(ENDPOINT,{method:'POST',signal:o.signal,headers:{'content-type':'application/json'},body:JSON.stringify({input})});
+ if(!res.ok){const e=new Error('request failed');e.code=res.status===429?'rate_limited':'error';throw e}
+ const j=await res.json();const text=j.text||'';
+ if(o.onText)o.onText({text,delta:text});
+ return {text,truncated:!!j.truncated};
+}
+sample=apiSample;
+downloads={save:async({filename,data})=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([data],{type:'text/plain'}));a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}};
+$('dl').style.display='';
+const NOAI='The AI backend is not connected yet. Open this file in a text editor and set ENDPOINT near the bottom.';
+const keyMsg=()=>NOAI;
+if(!ENDPOINT)$('msg').textContent=NOAI;
+
+const strip=t=>t.replace(/^```[\w+#-]*\n?/,"").replace(/\n?```\s*$/,"");
+let ctl=null,last="",mode="gen",lastExt="py";
+
+async function learn(){
+ const code=$('prompt').value.trim();
+ if(!code){$('msg').textContent='Paste some code to learn from first.';return}
+ if(!sample){$('msg').textContent='Explaining is not available in this view.';return}
+ if(ctl)ctl.abort();ctl=new AbortController();
+ const go=$('go');go.disabled=true;$('msg').textContent='Preparing your lesson…';$('learn').classList.remove('on');$('out').classList.remove('on');
+ const lg=sel.value==='auto'?'Detect the programming language.':'The language is '+LANGS[sel.value][0]+'.';
+ const input=`You are Vantex, a patient programming teacher. ${lg} Teach a learner using the code between the markers. Explain simply and define any jargon. Return ONLY a JSON object (no markdown fences) with these keys: language; level (Beginner, Intermediate or Advanced); summary (what the code does, 2-3 plain sentences); walkthrough (array of {lines, snippet, explanation} covering the whole program in logical chunks, at most 12); concepts (array of 3-6 {name, explanation}); mistakes (array of {problem, why, fix} for bugs or bad practices, empty if none); tips (array of 2-4 short ways to practice or improve); quiz (array of 3 {q, a} questions that test understanding, with answers); fixed_code (the COMPLETE corrected code if there are mistakes, otherwise the original unchanged).
+<<<CODE
+${code}
+CODE>>>`;
+ let d;
+ try{
+  const r=await sample(input,{signal:ctl.signal,modelTier:'complex',cache:false});
+  const t=r.text;
+  try{d=JSON.parse(t.slice(t.indexOf('{'),t.lastIndexOf('}')+1))}catch(e){$('msg').textContent=r.truncated?'That code is too long to explain in one go — try a smaller piece.':'Could not read the lesson. Please try again.';go.disabled=false;return}
+ }catch(e){
+  if(e&&e.code==='no_key')$('msg').textContent=keyMsg(e);
+  else if(e&&e.code==='rate_limited')$('msg').textContent='Too many requests — wait a moment and retry.';
+  else $('msg').textContent='Something went wrong. Please try again.';
+  go.disabled=false;return;
+ }
+ const mk=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
+ const L=$('learn');L.textContent='';
+ const h=mk('h4','','What this code does');h.appendChild(mk('span','badge',d.level||''));L.appendChild(h);
+ L.appendChild(mk('p','sumtxt',d.summary||''));
+ const sec=(title,arr,fn)=>{if(!arr||!arr.length)return;L.appendChild(mk('h4','',title));arr.forEach(x=>L.appendChild(fn(x)))};
+ sec('Walkthrough, step by step',d.walkthrough,w=>{const b=mk('div','lbox');b.appendChild(mk('span','ln',w.lines?'Lines '+w.lines:'Step'));if(w.snippet)b.appendChild(mk('code','',w.snippet));b.appendChild(mk('p','',w.explanation||''));return b});
+ sec('Key concepts',d.concepts,c=>{const b=mk('div','lbox');b.appendChild(mk('b','',c.name||''));b.appendChild(mk('p','',c.explanation||''));return b});
+ const ms=d.mistakes||[];
+ if(ms.length)sec('What is wrong and how to fix it',ms,m=>{const b=mk('div','lbox bad');b.appendChild(mk('b','',m.problem||''));b.appendChild(mk('p','','Why it matters: '+(m.why||'')));b.appendChild(mk('p','','How to fix it: '+(m.fix||'')));return b});
+ else{L.appendChild(mk('h4','','What is wrong and how to fix it'));L.appendChild(mk('p','sumtxt','No mistakes found — nice work!'))}
+ if((d.tips||[]).length){L.appendChild(mk('h4','','Keep learning'));const ul=mk('ul');d.tips.forEach(t=>ul.appendChild(mk('li','',t)));L.appendChild(ul)}
+ sec('Test yourself (tap a question for the answer)',d.quiz,q=>{const e=mk('details','lbox');e.appendChild(mk('summary','',q.q||''));e.appendChild(mk('p','',q.a||''));return e});
+ L.classList.add('on');
+ const fixed=strip(String(d.fixed_code||'')).trim();
+ const ch=ms.length&&fixed&&fixed!==code;
+ const nm=LANGS.find(l=>l[0].toLowerCase()===String(d.language||'').toLowerCase());
+ lastExt=nm?nm[1]:(sel.value!=='auto'?LANGS[sel.value][1]:'txt');
+ if(ch){last=fixed;$('code').textContent=fixed;$('meta').textContent='Corrected code · '+(d.language||'');$('out').classList.add('on')}
+ $('msg').textContent=ch?'Lesson ready — the corrected code is below.':'Lesson ready.';
+ go.disabled=false;
+}
+
+function setMode(m){mode=m;
+ $("tg").classList.toggle("on",m==="gen");$("tr").classList.toggle("on",m==="review");$("tl").classList.toggle("on",m==="learn");
+ $("prompt").placeholder=m==="gen"?"e.g. make me a code for a calculator":m==="learn"?"Paste the code you want to understand and learn from":"Paste the code you wrote here and Vantex will check it…";
+ $("prompt").classList.toggle("mono",m!=="gen");
+ $("chips").style.display=m==="gen"?"":"none";
+ $("go").textContent=m==="gen"?"Generate code":m==="learn"?"Explain my code":"Review & fix";
+ buildOpts(m!=="gen");$("learn").classList.remove("on");$("rev").classList.remove("on");$("out").classList.remove("on");$("msg").textContent="";
+}
+
+async function review(){
+ const code=$("prompt").value.trim();
+ if(!code){$("msg").textContent="Paste some code to review first.";return}
+ if(!sample){$("msg").textContent="Reviewing isn't available in this view.";return}
+ if(ctl)ctl.abort();ctl=new AbortController();
+ $("go").disabled=true;$("msg").textContent="Reviewing your code…";$("rev").classList.remove("on");$("out").classList.remove("on");
+ const lg=sel.value==="auto"?"Detect the programming language.":"The language is "+LANGS[sel.value][0]+".";
+ const input="You are Vantex, a strict senior code reviewer. "+lg+" Review the code between the markers for correctness: syntax errors, logic bugs, runtime errors, unhandled edge cases, and security problems.\nReturn ONLY a JSON object (no markdown fences) with keys: \"language\" (name of the language), \"score\" (integer 0-100 = how correct the code is; 100 only if it is fully correct; be honest, and use 0 if it is not code), \"verdict\" (short phrase), \"summary\" (1-2 sentences), \"issues\" (array of {severity: high|medium|low, line: number or null, problem, fix}), \"fixed_code\" (the COMPLETE corrected code, preserving the author's intent and style; if the score is 100 return the original unchanged).\n<<<CODE\n"+code+"\nCODE>>>";
+ let d;
+ try{
+  const r=await sample(input,{signal:ctl.signal,modelTier:"complex",cache:false});
+  const t=r.text;
+  try{d=JSON.parse(t.slice(t.indexOf("{"),t.lastIndexOf("}")+1))}catch(e){$("msg").textContent=r.truncated?"That code is too long to review in one go — try a smaller piece.":"Couldn't read the review. Please try again.";$("go").disabled=false;return}
+ }catch(e){
+  if(e&&e.code==="no_key")$("msg").textContent=keyMsg(e);
+  else if(e&&e.code==="rate_limited")$("msg").textContent="Too many requests — wait a moment and retry.";
+  else $("msg").textContent="Something went wrong. Please try again.";
+  $("go").disabled=false;return;
+ }
+ const s=Math.max(0,Math.min(100,Math.round(+d.score||0)));
+ $("num").textContent=s;
+ $("ring").style.setProperty("--p",s);$("ring").style.setProperty("--c",s>=80?"#22c55e":s>=50?"#f59e0b":"#ef4444");
+ $("verdict").textContent=d.verdict||"";$("sum").textContent=d.summary||"";
+ const ul=$("issues");ul.textContent="";
+ (d.issues||[]).forEach(i=>{const li=document.createElement("li");const b=document.createElement("b");b.textContent=(i.severity||"issue").toUpperCase()+(i.line?" · line "+i.line:"")+": ";li.appendChild(b);li.appendChild(document.createTextNode((i.problem||"")+(i.fix?" → "+i.fix:"")));ul.appendChild(li)});
+ $("rev").classList.add("on");
+ const fixed=strip(String(d.fixed_code||"")).trim();
+ const ch=s<100&&fixed&&fixed!==code;
+ last=ch?fixed:code;
+ const nm=LANGS.find(l=>l[0].toLowerCase()===String(d.language||"").toLowerCase());
+ lastExt=nm?nm[1]:(sel.value!=="auto"?LANGS[sel.value][1]:"txt");
+ $("code").textContent=last;$("meta").textContent=(ch?"Corrected code · ":"No changes needed · ")+(d.language||"");
+ $("out").classList.add("on");
+ $("msg").textContent=ch?"Vantex fixed the problems listed above.":"Looks good — nothing to fix.";
+ $("go").disabled=false;
+}
+
+$("go").onclick=async()=>{
+ if(mode==="review")return review();
+ if(mode==="learn")return learn();
+ const p=$("prompt").value.trim();
+ if(!p){$("msg").textContent="Describe what you want to build first.";return}
+ if(!sample){$("msg").textContent="Generation isn't available in this view.";return}
+ const [name,ex0]=LANGS[sel.value];lastExt=ex0;
+ if(ctl)ctl.abort();ctl=new AbortController();
+ $("go").disabled=true;$("msg").textContent="Generating…";
+ $("out").classList.add("on");$("code").textContent="";$("meta").textContent=name;
+ const input="You are Vantex, a code generator. Write the COMPLETE, runnable "+name+" program for this request: \""+p+"\".\nRules: output only the code (no explanations, no markdown fences); include helpful comments; handle invalid input sensibly; for HTML output a single self-contained file with inline CSS and JS; if it is a console program, make it interactive.";
+ try{
+  const r=await sample(input,{signal:ctl.signal,modelTier:"default",cache:false,onText:({text})=>{last=strip(text);$("code").textContent=last}});
+  last=strip(r.text);$("code").textContent=last;
+  $("msg").textContent=r.truncated?"Output was cut off — try a simpler prompt.":"Done.";
+ }catch(e){
+  if(e&&e.code==="no_key")$("msg").textContent=keyMsg(e);
+  else if(e&&e.code==="rate_limited")$("msg").textContent="Too many requests — wait a moment and retry.";
+  else $("msg").textContent="Something went wrong. Please try again.";
+ }
+ $("go").disabled=false;
+};
+
+$("copy").onclick=async()=>{
+ try{await navigator.clipboard.writeText(last);$("copy").textContent="Copied ✓"}
+ catch(e){const r=document.createRange();r.selectNodeContents($("code"));const s=getSelection();s.removeAllRanges();s.addRange(r);$("copy").textContent="Selected"}
+ setTimeout(()=>$("copy").textContent="Copy",1500);
+};
+$("dl").onclick=async()=>{
+ if(!downloads||!last)return;
+ const ext=lastExt;
+ const file=ext==="java"?"Main.java":"vantex-output."+ext;
+ try{await downloads.save({filename:file,data:last})}catch(e){$("msg").textContent="Download was cancelled or unavailable."}
+};
+</script>
+</body>
+</html>
