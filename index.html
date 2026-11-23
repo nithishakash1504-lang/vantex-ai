@@ -1,62 +1,488 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IM Technologies | CCTV & Biometric Solutions</title>
-<link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>vantex.ai — Prompt in. Code out.</title>
+<meta name="description" content="Describe it in plain English and vantex.ai writes complete, runnable code in C, Java, Python, HTML and more.">
+<meta name="theme-color" content="#04050a">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+<style>
+:root{color-scheme:dark;box-sizing:border-box;--bg:#04050a;--surface:#0b0c16;--code:#05060c;--code-fg:#d9ddf5;--text:#eef0fa;--muted:#8b90ad;--line:rgba(255,255,255,.1);--a:#8b5cf6;--b:#22d3ee;--c:#e5e7f2;--d:#9aa0b8;--chrome:linear-gradient(180deg,#fff 0%,#cfd2e6 48%,#7d8199 100%);--ease:cubic-bezier(.2,.8,.2,1)}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+*,*:before,*:after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,"SF Pro Display",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;padding-bottom:env(safe-area-inset-bottom,0px)}
+body:before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(55% 45% at 78% 6%,rgba(139,92,246,.17),transparent 70%),radial-gradient(40% 40% at 6% 55%,rgba(34,211,238,.07),transparent 70%),radial-gradient(60% 40% at 50% 112%,rgba(139,92,246,.13),transparent 70%)}
+body:after{content:"";position:fixed;inset:0;z-index:50;pointer-events:none;opacity:.05;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+::selection{background:var(--a);color:#fff}
+
+/* floating glass nav */
+.nav{position:fixed;z-index:40;top:calc(14px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:26px;width:max-content;max-width:calc(100% - 20px);padding:7px 7px 7px 22px;border-radius:99px;background:rgba(14,15,28,.55);border:1px solid var(--line);backdrop-filter:blur(18px) saturate(1.4);-webkit-backdrop-filter:blur(18px) saturate(1.4);box-shadow:0 10px 40px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.08)}
+.logo{display:flex;align-items:center;gap:9px;font-weight:700;letter-spacing:-.02em;font-size:1.05rem;color:var(--text);text-decoration:none}
+.logo i{width:13px;height:13px;background:conic-gradient(from 200deg,var(--b),var(--a),#ff5fa2,var(--b));clip-path:polygon(0 0,34% 0,50% 55%,66% 0,100% 0,62% 100%,38% 100%)}
+.logo span{color:var(--b)}
+.links{display:flex;gap:2px}
+.links a{color:var(--muted);text-decoration:none;font-size:.86rem;padding:8px 14px;border-radius:99px;transition:color .3s,background .3s}
+.links a:hover{color:var(--text);background:rgba(255,255,255,.07)}
+.cta{display:inline-block;text-decoration:none;padding:9px 18px;font-size:.84rem}
+
+/* hero */
+.hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;padding:120px 0 44px;overflow:hidden}
+.hero-logo{position:absolute;inset:0}
+.hero-logo canvas{display:block;width:100%;height:100%;touch-action:pan-y;cursor:grab}
+.hero-logo canvas:active{cursor:grabbing}
+.hero-logo .hint{position:absolute;right:18px;top:50%;writing-mode:vertical-rl;font-size:.66rem;letter-spacing:.26em;text-transform:uppercase;color:var(--muted);pointer-events:none}
+.hero-in{position:relative;z-index:2;width:100%;pointer-events:none}
+.hero-in a,.hero-in button{pointer-events:auto}
+.pill{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:rgba(255,255,255,.04);backdrop-filter:blur(10px);color:var(--muted);padding:6px 14px;border-radius:99px;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase}
+h1{font-size:clamp(2.6rem,9.4vw,8.2rem);line-height:.92;letter-spacing:-.055em;font-weight:600;margin:22px 0 30px}
+h1 .l{display:block;overflow:hidden;padding:.02em 0 .1em}
+h1 .l>*{display:block}
+h1 .l:first-child>*{background:var(--chrome);-webkit-background-clip:text;background-clip:text;color:transparent}
+h1 em{font-style:normal;background:linear-gradient(95deg,#fff,#b9a5ff 42%,#5de0f5);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-row{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap}
+.sub{color:var(--muted);max-width:430px;font-size:1.05rem;margin:0 0 22px}
+.acts{display:flex;gap:12px;flex-wrap:wrap}
+.scroll{display:flex;align-items:center;gap:14px;font-size:.66rem;letter-spacing:.26em;text-transform:uppercase;color:var(--muted)}
+.scroll b{width:1px;height:58px;background:linear-gradient(var(--text),transparent);transform-origin:top;animation:drip 2.4s var(--ease) infinite}
+@keyframes drip{0%{transform:scaleY(0)}55%{transform:scaleY(1)}100%{transform:scaleY(1);opacity:0}}
+
+/* buttons */
+.btn{display:inline-block;border:0;border-radius:99px;padding:13px 26px;font:inherit;font-weight:600;font-size:.92rem;cursor:pointer;color:#06060d;text-decoration:none;background:linear-gradient(180deg,#fff,#c3c7dc);box-shadow:inset 0 0 0 1px rgba(255,255,255,.5),0 10px 30px rgba(139,92,246,.32);transition:box-shadow .35s,transform .25s var(--ease)}
+.btn:hover{box-shadow:inset 0 0 0 1px rgba(255,255,255,.6),0 14px 46px rgba(139,92,246,.65)}
+.btn:active{scale:.95}
+.btn:disabled{opacity:.5;cursor:wait}
+.btn.ghost{background:rgba(255,255,255,.03);color:var(--text);border:1px solid var(--line);padding:7px 15px;font-size:.8rem;font-weight:500;box-shadow:none}
+.btn.ghost:hover{border-color:var(--a);background:rgba(139,92,246,.14);box-shadow:none}
+.btn.big{padding:13px 26px;font-size:.92rem;font-weight:600}
+
+/* workspace */
+.eyebrow{display:flex;align-items:center;gap:16px;margin:0 0 22px;font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
+.eyebrow:after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
+.studio{position:relative;margin:clamp(70px,10vw,120px) 0 0;padding:24px;border-radius:24px;background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.012));border:1px solid var(--line);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);box-shadow:0 40px 120px rgba(0,0,0,.65),inset 0 1px 0 rgba(255,255,255,.1)}
+.studio:before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:linear-gradient(130deg,rgba(139,92,246,.75),transparent 35%,transparent 65%,rgba(34,211,238,.55));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.tabs{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:16px;background:rgba(0,0,0,.4);padding:4px;border-radius:99px;width:fit-content;border:1px solid var(--line)}
+.tab{border:0;background:transparent;color:var(--muted);padding:9px 18px;border-radius:99px;font:inherit;font-size:.86rem;font-weight:600;cursor:pointer;transition:color .3s,background .3s}
+.tab:hover{color:var(--text)}
+.tab.on{background:linear-gradient(180deg,#fff,#c3c7dc);color:#06060d}
+textarea{width:100%;min-height:110px;resize:vertical;background:rgba(0,0,0,.45);color:var(--text);border:1px solid var(--line);border-radius:14px;padding:16px;font:inherit;font-size:1rem;transition:border-color .3s,box-shadow .3s}
+textarea:focus,select:focus{outline:0;border-color:var(--a);box-shadow:0 0 0 4px rgba(139,92,246,.2)}
+textarea.mono{font:13px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;min-height:200px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:14px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chip{border:1px solid var(--line);background:transparent;color:var(--muted);padding:6px 14px;border-radius:99px;font:inherit;font-size:.8rem;cursor:pointer;transition:all .3s}
+.chip:hover{color:#fff;border-color:var(--a);background:rgba(139,92,246,.2)}
+select{background:rgba(0,0,0,.45);color:var(--text);border:1px solid var(--line);border-radius:99px;padding:11px 16px;font:inherit;font-size:.9rem;transition:border-color .3s,box-shadow .3s}
+.grow{flex:1}
+.msg{color:var(--muted);font-size:.85rem;margin-top:12px;min-height:1em}
+.learn{display:none;margin-top:18px}
+.learn.on{display:block}
+.learn h4{margin:20px 0 10px;font-size:1rem;letter-spacing:-.01em}
+.learn h4:first-child{margin-top:0}
+.learn .sumtxt{margin:0;color:var(--muted);font-size:.92rem}
+.learn ul{padding-left:18px;color:var(--muted);font-size:.9rem}
+.badge{display:inline-block;font-size:.68rem;border:1px solid var(--line);border-radius:99px;padding:2px 10px;color:var(--b);margin-left:8px;font-weight:600;letter-spacing:.06em}
+.lbox{border:1px solid var(--line);border-left:2px solid var(--b);border-radius:12px;padding:14px;margin-bottom:10px;background:rgba(255,255,255,.025)}
+.lbox p{margin:6px 0 0;color:var(--muted);font-size:.9rem}
+.lbox code{display:block;background:var(--code);color:var(--code-fg);padding:9px 11px;border-radius:8px;font:12px/1.5 ui-monospace,Menlo,Consolas,monospace;overflow-x:auto;white-space:pre;margin-top:6px}
+.lbox.bad{border-left-color:#ef4444}
+.lbox .ln{font-size:.72rem;color:var(--a);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.lbox summary{cursor:pointer;font-weight:600;font-size:.92rem}
+.rev{display:none;margin-top:18px;border:1px solid var(--line);border-radius:14px;padding:18px;background:rgba(255,255,255,.025)}
+.rev.on{display:block}
+.score{display:flex;gap:18px;align-items:center}
+.score p{margin:2px 0 0;color:var(--muted);font-size:.92rem}
+.ring{width:84px;height:84px;border-radius:50%;background:conic-gradient(var(--c,#22c55e) calc(var(--p,0)*1%),rgba(255,255,255,.1) 0);display:grid;place-items:center;position:relative;flex:none}
+.ring:before{content:"";position:absolute;inset:7px;border-radius:50%;background:var(--surface)}
+.ring span{position:relative;font-size:.7rem;color:var(--muted)}
+.ring b{font-size:1.5rem;color:var(--text)}
+.rev ul{margin:12px 0 0;padding-left:18px;font-size:.9rem}
+.rev li{margin-bottom:6px}
+.out{margin-top:18px;border-radius:14px;overflow:hidden;background:var(--code);border:1px solid var(--line);display:none}
+.out.on{display:block}
+.bar{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid var(--line);color:var(--muted);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}
+pre{margin:0;padding:18px;overflow:auto;max-height:480px;color:var(--code-fg);font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+
+/* process, languages, footer */
+#how,#langs{margin-top:clamp(110px,18vw,220px)}
+h2{font-size:clamp(2.4rem,7vw,6rem);line-height:.95;letter-spacing:-.045em;font-weight:600;margin:0 0 56px;background:var(--chrome);-webkit-background-clip:text;background-clip:text;color:transparent}
+.grid{display:flex;flex-direction:column}
+.card{position:relative;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:24px;align-items:center;padding:36px 0;border-top:1px solid var(--line)}
+.card:last-child{border-bottom:1px solid var(--line)}
+.card:nth-child(2){padding-left:clamp(0px,8vw,120px)}
+.card:nth-child(3){padding-left:clamp(0px,16vw,240px)}
+.card:before{content:"";position:absolute;top:-1px;left:0;height:1px;width:0;background:linear-gradient(90deg,var(--a),var(--b));transition:width .9s var(--ease)}
+.card:hover:before{width:100%}
+.card b{font-size:clamp(1.8rem,4.6vw,3.6rem);font-weight:300;letter-spacing:-.04em;line-height:1;transition:transform .6s var(--ease)}
+.card:hover b{transform:translateX(10px);background:linear-gradient(90deg,#fff,#b9a5ff,#5de0f5);-webkit-background-clip:text;background-clip:text;color:transparent}
+.card p{margin:0;color:var(--muted);max-width:380px}
+.langs{display:flex;flex-wrap:wrap;gap:4px 10px}
+.langs span{font-size:clamp(1.4rem,3.6vw,2.9rem);font-weight:300;letter-spacing:-.03em;color:rgba(238,240,250,.3);padding:2px 4px;transition:color .35s,text-shadow .35s,transform .35s var(--ease);cursor:default}
+.langs span:after{content:"/";margin-left:14px;color:rgba(255,255,255,.12)}
+.langs span:last-child:after{content:""}
+.langs span:hover{color:#fff;text-shadow:0 0 30px rgba(139,92,246,.95);transform:translateY(-4px)}
+footer{margin-top:clamp(110px,16vw,200px);padding:34px 0 30px;border-top:1px solid var(--line);color:var(--muted);font-size:.85rem;text-align:left}
+.wm{font-size:clamp(3rem,17vw,15rem);font-weight:700;letter-spacing:-.07em;line-height:.8;text-align:center;margin:56px 0 24px;background:linear-gradient(180deg,rgba(255,255,255,.24),rgba(255,255,255,0) 88%);-webkit-background-clip:text;background-clip:text;color:transparent;user-select:none}
+.made{color:var(--text);font-weight:600}
+
+/* cursor */
+.curs{position:fixed;z-index:60;left:0;top:0;width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:50%;background:#fff;pointer-events:none;mix-blend-mode:difference;opacity:0}
+.curs.r{width:38px;height:38px;margin:-19px 0 0 -19px;background:none;border:1px solid rgba(255,255,255,.5);transition:width .3s,height .3s,margin .3s,background .3s}
+.curs.r.h{width:64px;height:64px;margin:-32px 0 0 -32px;background:rgba(139,92,246,.2)}
+@media (hover:none),(pointer:coarse){.curs{display:none}}
+
+@media (max-width:720px){
+.nav{gap:6px;padding:6px 6px 6px 16px}.links a{padding:7px 9px;font-size:.78rem}.cta{display:none}
+.hero{padding-bottom:30px}.hero-logo .hint{display:none}.scroll{display:none}
+.card{grid-template-columns:1fr;gap:10px;padding:28px 0}.card:nth-child(n){padding-left:0}
+.studio{padding:16px;border-radius:20px}.btn.big{width:100%;text-align:center}.acts{width:100%}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.scroll b{animation:none}*{transition-duration:.01ms!important}}
+</style>
 </head>
 <body>
+<div class="curs" id="cur"></div><div class="curs r" id="cur2"></div>
+<nav class="nav" aria-label="Primary"><a class="logo" href="#top"><i></i>vantex<span>.ai</span></a><div class="links"><a href="#studio">Studio</a><a href="#how">How it works</a><a href="#langs">Languages</a></div><a class="btn mag cta" href="#studio">Start building</a></nav>
 
-<div id="loader">
-  <div class="logo-container">
-    <img src="assets/logo.png" id="logo">
-    <h1>IM Technologies</h1>
-    <p>Security • Innovation • Trust</p>
-  </div>
+<header class="hero" id="top">
+<div class="hero-logo" id="logo3d" aria-label="Interactive 3D vantex logo" role="img"><canvas id="logoCanvas"></canvas><div class="hint">drag to rotate</div></div>
+<div class="hero-in wrap">
+<span class="pill">✦ One prompt. Complete code.</span>
+<h1><span class="l"><span>Describe it.</span></span><span class="l"><em>Vantex builds it.</em></span></h1>
+<div class="hero-row">
+<div><p class="sub">Type what you want in plain English and get full, runnable code in C, Java, HTML, Python and more — in seconds.</p><div class="acts"><a class="btn big mag" href="#studio">Start building</a><a class="btn ghost big mag" href="#how">How it works</a></div></div>
+<div class="scroll"><span>Scroll</span><b></b></div>
 </div>
+</div>
+</header>
 
-<div id="particles"></div>
+<div class="wrap">
+<div class="eyebrow" style="margin-top:clamp(70px,10vw,120px)">01 — Studio</div>
 
-<nav>
-  <div class="logo">
-    <img src="assets/logo.png">
-    <span>IM Technologies</span>
-  </div>
-
-  <ul>
-    <li><a href="#">Home</a></li>
-    <li><a href="#">About</a></li>
-    <li><a href="#">Services</a></li>
-    <li><a href="#">Brands</a></li>
-    <li><a href="#">Gallery</a></li>
-    <li><a href="#">Contact</a></li>
-  </ul>
-
-  <a href="https://wa.me/918660621205" class="whatsapp-btn">
-    <i class="fab fa-whatsapp"></i> WhatsApp
-  </a>
-</nav>
-
-<section class="hero">
-  <div class="hero-content">
-    <h3>Professional Security Solutions</h3>
-    <h1>Protect What Matters <span>With Smart Technology</span></h1>
-    <p>Experts in CCTV Surveillance, Biometric Attendance, Access Control, Networking, Installation & Maintenance.</p>
-
-    <div class="buttons">
-      <a href="#" class="primary">Get Free Quote</a>
-      <a href="https://wa.me/918660621205" class="secondary">Contact Us</a>
-    </div>
-  </div>
-
-  <div class="hero-image">
-    <img src="assets/logo.png">
-  </div>
+<section class="studio" id="studio" style="margin-top:0">
+<div class="tabs"><button class="tab on" id="tg" onclick="setMode('gen')">Generate</button><button class="tab" id="tr" onclick="setMode('review')">Review &amp; fix</button><button class="tab" id="tl" onclick="setMode('learn')">Explain &amp; learn</button></div>
+<textarea id="prompt" placeholder="e.g. make me a code for a calculator" aria-label="Describe the code you want"></textarea>
+<div class="chips" id="chips"></div>
+<div class="row">
+<select id="lang" aria-label="Programming language"></select>
+<span class="grow"></span>
+<button class="btn" id="go">Generate code</button>
+</div>
+<div class="msg" id="msg"></div>
+<div class="rev" id="rev"><div class="score"><div class="ring" id="ring"><span><b id="num">0</b>/100</span></div><div><b id="verdict"></b><p id="sum"></p></div></div><ul id="issues"></ul></div>
+<div class="learn" id="learn"></div>
+<div class="out" id="out">
+<div class="bar"><span id="meta">output</span><span><button class="btn ghost" id="copy">Copy</button> <button class="btn ghost" id="dl" style="display:none">Download</button></span></div>
+<pre><code id="code"></code></pre>
+</div>
 </section>
 
-<script src="script.js"></script>
+<section id="how">
+<div class="eyebrow">02 — Process</div>
+<h2>How it works</h2>
+<div class="grid">
+<div class="card"><b>1 · Describe</b><p>Write a single prompt — "a calculator", "a snake game", "a to-do list with login".</p></div>
+<div class="card"><b>2 · Pick a language</b><p>Choose C, Java, Python, HTML and more. Vantex adapts idioms and structure to each.</p></div>
+<div class="card"><b>3 · Get full code</b><p>Receive the entire program, commented and ready to copy, run or download.</p></div>
+</div>
+</section>
+
+<section id="langs">
+<div class="eyebrow">03 — Languages</div>
+<h2>Works in your language</h2>
+<div class="langs" id="langlist"></div>
+</section>
+
+<footer><div class="wm" aria-hidden="true">vantex.ai</div>© 2026 vantex.ai · Always review generated code before shipping it.<br><br>Made by <b class="made">Nithish</b></footer>
+</div>
+
+<script>
+const LANGS=[["Python","py"],["C","c"],["Java","java"],["HTML / CSS / JS","html"],["JavaScript","js"],["C++","cpp"],["C#","cs"],["TypeScript","ts"],["Go","go"],["Rust","rs"],["PHP","php"],["Kotlin","kt"],["Swift","swift"]];
+const EX=["a calculator","a snake game","a to-do list app","a password generator","a tic-tac-toe game"];
+const $=id=>document.getElementById(id);
+const sel=$("lang");
+function buildOpts(auto){sel.textContent="";if(auto){const a=document.createElement("option");a.value="auto";a.textContent="Auto-detect";sel.appendChild(a)}LANGS.forEach(([n],i)=>{const o=document.createElement("option");o.value=i;o.textContent=n;sel.appendChild(o)})}
+buildOpts(false);
+LANGS.forEach(([n])=>{const s=document.createElement("span");s.textContent=n;$("langlist").appendChild(s)});
+EX.forEach(t=>{const b=document.createElement("button");b.className="chip";b.textContent=t;b.onclick=()=>{$("prompt").value="make me a code for "+t;$("prompt").focus()};$("chips").appendChild(b)});
+
+let sample=null,downloads=null;
+// ---- Paste the URL of your AI backend here (see worker.js). No API key is ever stored in this page. ----
+const ENDPOINT='https://vantex-ai.nithishakash1504.workers.dev';
+async function apiSample(input,o={}){
+ if(!ENDPOINT){const e=new Error('no endpoint');e.code='no_key';throw e}
+ const res=await fetch(ENDPOINT,{method:'POST',signal:o.signal,headers:{'content-type':'application/json'},body:JSON.stringify({input})});
+ if(!res.ok){const e=new Error('request failed');e.code=res.status===429?'rate_limited':'error';throw e}
+ const j=await res.json();const text=j.text||'';
+ if(o.onText)o.onText({text,delta:text});
+ return {text,truncated:!!j.truncated};
+}
+sample=apiSample;
+downloads={save:async({filename,data})=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([data],{type:'text/plain'}));a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}};
+$('dl').style.display='';
+const NOAI='The AI backend is not connected yet. Open this file in a text editor and set ENDPOINT near the bottom.';
+const keyMsg=()=>NOAI;
+if(!ENDPOINT)$('msg').textContent=NOAI;
+
+const strip=t=>t.replace(/^```[\w+#-]*\n?/,"").replace(/\n?```\s*$/,"");
+let ctl=null,last="",mode="gen",lastExt="py";
+
+async function learn(){
+ const code=$('prompt').value.trim();
+ if(!code){$('msg').textContent='Paste some code to learn from first.';return}
+ if(!sample){$('msg').textContent='Explaining is not available in this view.';return}
+ if(ctl)ctl.abort();ctl=new AbortController();
+ const go=$('go');go.disabled=true;$('msg').textContent='Preparing your lesson…';$('learn').classList.remove('on');$('out').classList.remove('on');
+ const lg=sel.value==='auto'?'Detect the programming language.':'The language is '+LANGS[sel.value][0]+'.';
+ const input=`You are Vantex, a patient programming teacher. ${lg} Teach a learner using the code between the markers. Explain simply and define any jargon. Return ONLY a JSON object (no markdown fences) with these keys: language; level (Beginner, Intermediate or Advanced); summary (what the code does, 2-3 plain sentences); walkthrough (array of {lines, snippet, explanation} covering the whole program in logical chunks, at most 12); concepts (array of 3-6 {name, explanation}); mistakes (array of {problem, why, fix} for bugs or bad practices, empty if none); tips (array of 2-4 short ways to practice or improve); quiz (array of 3 {q, a} questions that test understanding, with answers); fixed_code (the COMPLETE corrected code if there are mistakes, otherwise the original unchanged).
+<<<CODE
+${code}
+CODE>>>`;
+ let d;
+ try{
+  const r=await sample(input,{signal:ctl.signal,modelTier:'complex',cache:false});
+  const t=r.text;
+  try{d=JSON.parse(t.slice(t.indexOf('{'),t.lastIndexOf('}')+1))}catch(e){$('msg').textContent=r.truncated?'That code is too long to explain in one go — try a smaller piece.':'Could not read the lesson. Please try again.';go.disabled=false;return}
+ }catch(e){
+  if(e&&e.code==='no_key')$('msg').textContent=keyMsg(e);
+  else if(e&&e.code==='rate_limited')$('msg').textContent='Too many requests — wait a moment and retry.';
+  else $('msg').textContent='Something went wrong. Please try again.';
+  go.disabled=false;return;
+ }
+ const mk=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
+ const L=$('learn');L.textContent='';
+ const h=mk('h4','','What this code does');h.appendChild(mk('span','badge',d.level||''));L.appendChild(h);
+ L.appendChild(mk('p','sumtxt',d.summary||''));
+ const sec=(title,arr,fn)=>{if(!arr||!arr.length)return;L.appendChild(mk('h4','',title));arr.forEach(x=>L.appendChild(fn(x)))};
+ sec('Walkthrough, step by step',d.walkthrough,w=>{const b=mk('div','lbox');b.appendChild(mk('span','ln',w.lines?'Lines '+w.lines:'Step'));if(w.snippet)b.appendChild(mk('code','',w.snippet));b.appendChild(mk('p','',w.explanation||''));return b});
+ sec('Key concepts',d.concepts,c=>{const b=mk('div','lbox');b.appendChild(mk('b','',c.name||''));b.appendChild(mk('p','',c.explanation||''));return b});
+ const ms=d.mistakes||[];
+ if(ms.length)sec('What is wrong and how to fix it',ms,m=>{const b=mk('div','lbox bad');b.appendChild(mk('b','',m.problem||''));b.appendChild(mk('p','','Why it matters: '+(m.why||'')));b.appendChild(mk('p','','How to fix it: '+(m.fix||'')));return b});
+ else{L.appendChild(mk('h4','','What is wrong and how to fix it'));L.appendChild(mk('p','sumtxt','No mistakes found — nice work!'))}
+ if((d.tips||[]).length){L.appendChild(mk('h4','','Keep learning'));const ul=mk('ul');d.tips.forEach(t=>ul.appendChild(mk('li','',t)));L.appendChild(ul)}
+ sec('Test yourself (tap a question for the answer)',d.quiz,q=>{const e=mk('details','lbox');e.appendChild(mk('summary','',q.q||''));e.appendChild(mk('p','',q.a||''));return e});
+ L.classList.add('on');
+ const fixed=strip(String(d.fixed_code||'')).trim();
+ const ch=ms.length&&fixed&&fixed!==code;
+ const nm=LANGS.find(l=>l[0].toLowerCase()===String(d.language||'').toLowerCase());
+ lastExt=nm?nm[1]:(sel.value!=='auto'?LANGS[sel.value][1]:'txt');
+ if(ch){last=fixed;$('code').textContent=fixed;$('meta').textContent='Corrected code · '+(d.language||'');$('out').classList.add('on')}
+ $('msg').textContent=ch?'Lesson ready — the corrected code is below.':'Lesson ready.';
+ go.disabled=false;
+}
+
+function setMode(m){mode=m;
+ $("tg").classList.toggle("on",m==="gen");$("tr").classList.toggle("on",m==="review");$("tl").classList.toggle("on",m==="learn");
+ $("prompt").placeholder=m==="gen"?"e.g. make me a code for a calculator":m==="learn"?"Paste the code you want to understand and learn from":"Paste the code you wrote here and Vantex will check it…";
+ $("prompt").classList.toggle("mono",m!=="gen");
+ $("chips").style.display=m==="gen"?"":"none";
+ $("go").textContent=m==="gen"?"Generate code":m==="learn"?"Explain my code":"Review & fix";
+ buildOpts(m!=="gen");$("learn").classList.remove("on");$("rev").classList.remove("on");$("out").classList.remove("on");$("msg").textContent="";
+}
+
+async function review(){
+ const code=$("prompt").value.trim();
+ if(!code){$("msg").textContent="Paste some code to review first.";return}
+ if(!sample){$("msg").textContent="Reviewing isn't available in this view.";return}
+ if(ctl)ctl.abort();ctl=new AbortController();
+ $("go").disabled=true;$("msg").textContent="Reviewing your code…";$("rev").classList.remove("on");$("out").classList.remove("on");
+ const lg=sel.value==="auto"?"Detect the programming language.":"The language is "+LANGS[sel.value][0]+".";
+ const input="You are Vantex, a strict senior code reviewer. "+lg+" Review the code between the markers for correctness: syntax errors, logic bugs, runtime errors, unhandled edge cases, and security problems.\nReturn ONLY a JSON object (no markdown fences) with keys: \"language\" (name of the language), \"score\" (integer 0-100 = how correct the code is; 100 only if it is fully correct; be honest, and use 0 if it is not code), \"verdict\" (short phrase), \"summary\" (1-2 sentences), \"issues\" (array of {severity: high|medium|low, line: number or null, problem, fix}), \"fixed_code\" (the COMPLETE corrected code, preserving the author's intent and style; if the score is 100 return the original unchanged).\n<<<CODE\n"+code+"\nCODE>>>";
+ let d;
+ try{
+  const r=await sample(input,{signal:ctl.signal,modelTier:"complex",cache:false});
+  const t=r.text;
+  try{d=JSON.parse(t.slice(t.indexOf("{"),t.lastIndexOf("}")+1))}catch(e){$("msg").textContent=r.truncated?"That code is too long to review in one go — try a smaller piece.":"Couldn't read the review. Please try again.";$("go").disabled=false;return}
+ }catch(e){
+  if(e&&e.code==="no_key")$("msg").textContent=keyMsg(e);
+  else if(e&&e.code==="rate_limited")$("msg").textContent="Too many requests — wait a moment and retry.";
+  else $("msg").textContent="Something went wrong. Please try again.";
+  $("go").disabled=false;return;
+ }
+ const s=Math.max(0,Math.min(100,Math.round(+d.score||0)));
+ $("num").textContent=s;
+ $("ring").style.setProperty("--p",s);$("ring").style.setProperty("--c",s>=80?"#22c55e":s>=50?"#f59e0b":"#ef4444");
+ $("verdict").textContent=d.verdict||"";$("sum").textContent=d.summary||"";
+ const ul=$("issues");ul.textContent="";
+ (d.issues||[]).forEach(i=>{const li=document.createElement("li");const b=document.createElement("b");b.textContent=(i.severity||"issue").toUpperCase()+(i.line?" · line "+i.line:"")+": ";li.appendChild(b);li.appendChild(document.createTextNode((i.problem||"")+(i.fix?" → "+i.fix:"")));ul.appendChild(li)});
+ $("rev").classList.add("on");
+ const fixed=strip(String(d.fixed_code||"")).trim();
+ const ch=s<100&&fixed&&fixed!==code;
+ last=ch?fixed:code;
+ const nm=LANGS.find(l=>l[0].toLowerCase()===String(d.language||"").toLowerCase());
+ lastExt=nm?nm[1]:(sel.value!=="auto"?LANGS[sel.value][1]:"txt");
+ $("code").textContent=last;$("meta").textContent=(ch?"Corrected code · ":"No changes needed · ")+(d.language||"");
+ $("out").classList.add("on");
+ $("msg").textContent=ch?"Vantex fixed the problems listed above.":"Looks good — nothing to fix.";
+ $("go").disabled=false;
+}
+
+$("go").onclick=async()=>{
+ if(mode==="review")return review();
+ if(mode==="learn")return learn();
+ const p=$("prompt").value.trim();
+ if(!p){$("msg").textContent="Describe what you want to build first.";return}
+ if(!sample){$("msg").textContent="Generation isn't available in this view.";return}
+ const [name,ex0]=LANGS[sel.value];lastExt=ex0;
+ if(ctl)ctl.abort();ctl=new AbortController();
+ $("go").disabled=true;$("msg").textContent="Generating…";
+ $("out").classList.add("on");$("code").textContent="";$("meta").textContent=name;
+ const input="You are Vantex, a code generator. Write the COMPLETE, runnable "+name+" program for this request: \""+p+"\".\nRules: output only the code (no explanations, no markdown fences); include helpful comments; handle invalid input sensibly; for HTML output a single self-contained file with inline CSS and JS; if it is a console program, make it interactive.";
+ try{
+  const r=await sample(input,{signal:ctl.signal,modelTier:"default",cache:false,onText:({text})=>{last=strip(text);$("code").textContent=last}});
+  last=strip(r.text);$("code").textContent=last;
+  $("msg").textContent=r.truncated?"Output was cut off — try a simpler prompt.":"Done.";
+ }catch(e){
+  if(e&&e.code==="no_key")$("msg").textContent=keyMsg(e);
+  else if(e&&e.code==="rate_limited")$("msg").textContent="Too many requests — wait a moment and retry.";
+  else $("msg").textContent="Something went wrong. Please try again.";
+ }
+ $("go").disabled=false;
+};
+
+$("copy").onclick=async()=>{
+ try{await navigator.clipboard.writeText(last);$("copy").textContent="Copied ✓"}
+ catch(e){const r=document.createRange();r.selectNodeContents($("code"));const s=getSelection();s.removeAllRanges();s.addRange(r);$("copy").textContent="Selected"}
+ setTimeout(()=>$("copy").textContent="Copy",1500);
+};
+$("dl").onclick=async()=>{
+ if(!downloads||!last)return;
+ const ext=lastExt;
+ const file=ext==="java"?"Main.java":"vantex-output."+ext;
+ try{await downloads.save({filename:file,data:last})}catch(e){$("msg").textContent="Download was cancelled or unavailable."}
+};
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+  if(!window.THREE)return;
+  var holder=document.getElementById('logo3d'),canvas=document.getElementById('logoCanvas');
+  if(!holder||!canvas)return;
+  var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var renderer;
+  try{renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:true});}catch(e){holder.style.display='none';return;}
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+  renderer.setClearColor(0x000000,0);
+  var scene=new THREE.Scene();
+  var camera=new THREE.PerspectiveCamera(38,1,0.1,100);
+  camera.position.set(0,0.2,9.5);
+
+  var stops=[[0,new THREE.Color('#22e5ff')],[0.3,new THREE.Color('#3b5bff')],[0.6,new THREE.Color('#c030ff')],[0.82,new THREE.Color('#ff3d8b')],[1,new THREE.Color('#ffa63c')]];
+  function grad(t){
+    t=Math.max(0,Math.min(1,t));
+    for(var i=1;i<stops.length;i++){
+      if(t<=stops[i][0]){var a=stops[i-1],b=stops[i];return a[1].clone().lerp(b[1],(t-a[0])/(b[0]-a[0]));}
+    }
+    return stops[stops.length-1][1].clone();
+  }
+  var s=new THREE.Shape(),pts=[[-1.5,1.2],[-0.7,1.2],[0,-0.25],[0.7,1.2],[1.5,1.2],[0.4,-1.3],[-0.4,-1.3]];
+  s.moveTo(pts[0][0],pts[0][1]);
+  for(var i=1;i<pts.length;i++)s.lineTo(pts[i][0],pts[i][1]);
+  s.closePath();
+  var geo=new THREE.ExtrudeGeometry(s,{depth:0.55,bevelEnabled:true,bevelThickness:0.14,bevelSize:0.12,bevelSegments:5,curveSegments:8});
+  geo.center();
+  var pos=geo.attributes.position,cols=new Float32Array(pos.count*3);
+  for(var j=0;j<pos.count;j++){
+    var t=0.5+pos.getX(j)*0.32-pos.getY(j)*0.2+pos.getZ(j)*0.15,c=grad(t);
+    cols[j*3]=c.r;cols[j*3+1]=c.g;cols[j*3+2]=c.b;
+  }
+  geo.setAttribute('color',new THREE.BufferAttribute(cols,3));
+  var mesh=new THREE.Mesh(geo,new THREE.MeshPhysicalMaterial({vertexColors:true,metalness:0.25,roughness:0.18,clearcoat:1,clearcoatRoughness:0.08,transparent:true,opacity:0.8,emissive:0x1a1050,emissiveIntensity:0.6}));
+  var edges=new THREE.LineSegments(new THREE.EdgesGeometry(geo,35),new THREE.LineBasicMaterial({color:0xffffff,transparent:true,opacity:0.4}));
+  var orb=new THREE.Mesh(new THREE.SphereGeometry(0.34,48,48),new THREE.MeshPhysicalMaterial({color:0xffc83a,emissive:0xff7a00,emissiveIntensity:0.9,metalness:0.1,roughness:0.12,clearcoat:1,transparent:true,opacity:0.88}));
+  orb.position.set(0,1.95,0);
+  var ring=new THREE.Mesh(new THREE.TorusGeometry(0.62,0.03,16,96),new THREE.MeshBasicMaterial({color:0x7df3ff,transparent:true,opacity:0.7}));
+  ring.position.copy(orb.position);ring.rotation.x=Math.PI/2.4;
+  var group=new THREE.Group();group.add(mesh,edges,orb,ring);group.position.y=0.35;scene.add(group);
+
+  scene.add(new THREE.AmbientLight(0xffffff,0.55));
+  var key=new THREE.DirectionalLight(0xffffff,0.9);key.position.set(2,4,5);scene.add(key);
+  var l1=new THREE.PointLight(0x22e5ff,2.2,20);l1.position.set(-4,2,4);scene.add(l1);
+  var l2=new THREE.PointLight(0x9b6cff,2.4,20);l2.position.set(4,-1,4);scene.add(l2);
+  var l3=new THREE.PointLight(0xdfe6ff,1.6,20);l3.position.set(0,4,-4);scene.add(l3);
+
+  var PN=window.innerWidth<700?220:480,pp=new Float32Array(PN*3);
+  for(var q=0;q<PN*3;q+=3){pp[q]=(Math.random()-.5)*16;pp[q+1]=(Math.random()-.5)*10;pp[q+2]=(Math.random()-.5)*8-1;}
+  var pg=new THREE.BufferGeometry();pg.setAttribute('position',new THREE.BufferAttribute(pp,3));
+  var parts=new THREE.Points(pg,new THREE.PointsMaterial({size:0.035,color:0xbfb4ff,transparent:true,opacity:0.65,depthWrite:false}));scene.add(parts);
+  var mx=0,my=0;window.addEventListener('pointermove',function(e){mx=e.clientX/window.innerWidth-0.5;my=e.clientY/window.innerHeight-0.5;},{passive:true});
+  var rotY=-0.5,rotX=0.12,velY=0,velX=0,dragging=false,lx=0,ly=0,idle=0,visible=true;
+  canvas.addEventListener('pointerdown',function(e){dragging=true;lx=e.clientX;ly=e.clientY;idle=0;try{canvas.setPointerCapture(e.pointerId)}catch(_){}});
+  canvas.addEventListener('pointermove',function(e){
+    if(!dragging)return;
+    var dx=e.clientX-lx,dy=e.clientY-ly;lx=e.clientX;ly=e.clientY;
+    velY=dx*0.0065;velX=dy*0.0065;rotY+=velY;rotX+=velX;
+  });
+  function up(){dragging=false;}
+  canvas.addEventListener('pointerup',up);canvas.addEventListener('pointercancel',up);
+
+  function resize(){
+    var w=holder.clientWidth||600,h=holder.clientHeight||320;
+    renderer.setSize(w,h,false);camera.aspect=w/h;
+    camera.position.z=w/h<0.9?14:(w/h>2?10.5:9.5);
+    camera.updateProjectionMatrix();
+  }
+  window.addEventListener('resize',resize);resize();
+  if('IntersectionObserver' in window){new IntersectionObserver(function(en){visible=en[0].isIntersecting;}).observe(holder);}
+
+  var t0=performance.now();
+  function tick(){
+    requestAnimationFrame(tick);
+    if(!visible)return;
+    var t=(performance.now()-t0)/1000;
+    if(!dragging){
+      velY*=0.95;velX*=0.95;rotY+=velY;rotX+=velX;idle++;
+      if(!reduce&&idle>60)rotY+=0.006;
+      rotX+=(0.12+my*0.3-rotX)*0.02;
+    }
+    rotX=Math.max(-1.2,Math.min(1.2,rotX));
+    group.rotation.y=rotY;group.rotation.x=rotX;
+    if(!reduce){
+      group.position.y=0.35+Math.sin(t*1.2)*0.08;
+      ring.rotation.z=t*1.6;parts.rotation.y=t*0.02+mx*0.2;camera.position.x+=(mx*1.4-camera.position.x)*0.04;camera.lookAt(0,0.2,0);orb.scale.setScalar(1+Math.sin(t*2)*0.05);
+      l1.position.x=-4+Math.sin(t*0.7)*1.5;l2.position.x=4+Math.cos(t*0.8)*1.5;
+    }
+    renderer.render(scene,camera);
+  }
+  tick();
+})();
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+(function(){
+  var rm=matchMedia('(prefers-reduced-motion: reduce)').matches,fine=matchMedia('(pointer:fine)').matches;
+  if(fine){
+    var d=document.getElementById('cur'),r=document.getElementById('cur2'),x=0,y=0,rx=0,ry=0;
+    addEventListener('pointermove',function(e){x=e.clientX;y=e.clientY;d.style.opacity=r.style.opacity=1;d.style.transform='translate('+x+'px,'+y+'px)';},{passive:true});
+    (function loop(){rx+=(x-rx)*.16;ry+=(y-ry)*.16;r.style.transform='translate('+rx+'px,'+ry+'px)';requestAnimationFrame(loop);})();
+    document.addEventListener('pointerover',function(e){r.classList.toggle('h',!!(e.target.closest&&e.target.closest('a,button,select,textarea,.langs span')));});
+    if(!rm)document.querySelectorAll('.mag,#go').forEach(function(el){
+      el.addEventListener('pointermove',function(e){var b=el.getBoundingClientRect();el.style.transform='translate('+((e.clientX-b.left-b.width/2)*.28)+'px,'+((e.clientY-b.top-b.height/2)*.4)+'px)';});
+      el.addEventListener('pointerleave',function(){el.style.transform='';});
+    });
+  }
+  if(!window.gsap||!window.ScrollTrigger||rm)return;
+  gsap.registerPlugin(ScrollTrigger);
+  var E='power3.out';
+  gsap.from('#logo3d',{opacity:0,scale:.86,duration:2.2,ease:E});
+  gsap.from('.hero .pill',{y:20,opacity:0,duration:1,delay:.25,ease:E});
+  gsap.from('h1 .l>*',{yPercent:112,duration:1.3,ease:'power4.out',stagger:.14,delay:.35});
+  gsap.from('.sub,.acts,.scroll',{y:26,opacity:0,duration:1,stagger:.12,delay:.95,ease:E});
+  gsap.from('.nav',{y:-40,opacity:0,duration:1,delay:.6,ease:E});
+  gsap.to('.hero-in',{yPercent:-16,opacity:0,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom 15%',scrub:true}});
+  gsap.to('#logoCanvas',{yPercent:10,scale:1.12,opacity:.2,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
+  gsap.from('.studio',{y:90,rotationX:7,transformPerspective:1200,opacity:0,duration:1.3,ease:E,scrollTrigger:{trigger:'.studio',start:'top 88%'}});
+  document.querySelectorAll('.eyebrow,h2').forEach(function(el){gsap.from(el,{y:el.tagName==='H2'?70:16,opacity:0,duration:1.1,ease:E,scrollTrigger:{trigger:el,start:'top 90%'}});});
+  document.querySelectorAll('.card').forEach(function(el){gsap.from(el,{y:60,opacity:0,duration:1.1,ease:E,scrollTrigger:{trigger:el,start:'top 90%'}});});
+  gsap.from('.langs span',{y:34,opacity:0,duration:.9,stagger:.045,ease:E,scrollTrigger:{trigger:'.langs',start:'top 85%'}});
+  gsap.from('.wm',{yPercent:40,opacity:0,duration:1.4,ease:E,scrollTrigger:{trigger:'.wm',start:'top 100%'}});
+  addEventListener('load',function(){ScrollTrigger.refresh();});
+})();
+</script>
 </body>
 </html>
